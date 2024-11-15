@@ -1,4 +1,4 @@
-/* .video-frame {
+.video-frame {
   width: 300px;
   height: 300px;
   border-radius: 10px;
@@ -145,4 +145,4 @@
   transform: translate(-50%, -50%);
   color: white;
   font-size: 1.2em;
-}  */
+} 
