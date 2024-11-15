@@ -2,6 +2,12 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
+console.log('Environment check:', {
+  hasApiKey: !!process.env.REACT_APP_API_KEY,
+  hasAuthDomain: !!process.env.REACT_APP_AUTH_DOMAIN,
+  nodeEnv: process.env.NODE_ENV,
+});
+
 // Paste your Firebase configuration object here
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -13,6 +19,10 @@ const firebaseConfig = {
   measurementId: process.env.REACT_APP_MEASUREMENT_ID,
 };
 
+console.log('Firebase config check:', {
+  hasApiKey: !!firebaseConfig.apiKey,
+  apiKeyLength: firebaseConfig.apiKey?.length,
+});
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
