@@ -6,6 +6,8 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^16.0.1",
     "@testing-library/user-event": "^13.5.0",
+    "agora-rtc-react": "^2.3.0",
+    "agora-rtc-sdk-ng": "^4.22.2",
     "axios": "^1.7.7",
     "express": "^4.21.1",
     "firebase": "^11.0.2",
