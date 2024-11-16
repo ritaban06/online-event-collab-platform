@@ -32,7 +32,7 @@ const EventForm = () => {
   });
 
   return (
-    <div className="bg-white p-6 rounded shadow-md max-w-md mx-auto">
+    <div className="bg-white p-6 rounded shadow-md mx-auto" style={{ width: '800px', maxWidth: '90%' }}>
       <h2 className="text-2xl font-bold mb-4">Create Event</h2>
       <InputField label="Event Title" name="title" value={eventDetails.title} onChange={handleChange} />
       <InputField label="Description" name="description" value={eventDetails.description} onChange={handleChange} />

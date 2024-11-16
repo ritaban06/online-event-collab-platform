@@ -18,12 +18,13 @@
   }
   
   .dashboard-content {
-    max-width: 800px;
+    max-width: 1200px;
     width: 100%;
     background: rgb(191, 192, 196);
     padding: 2rem;
     border-radius: 12px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    margin-top: 60px;
   }
   
   /* Section title */
@@ -56,5 +57,10 @@
   
   .animated-button:active {
     transform: translateY(1px); /* Slight depress effect on click */
+  }
+  
+  .video-section {
+    margin: -2rem;
+    background-color: transparent;
   }
   
