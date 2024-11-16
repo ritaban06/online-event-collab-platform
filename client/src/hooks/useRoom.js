@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { auth } from '../firebaseConfig';
 import { config } from '../config/agoraConfig';
 
@@ -9,6 +9,9 @@ export const useRoom = () => {
 
   const generateToken = async (channelName, uid) => {
     try {
+      return '007eJxTYLhw5MK5Q0e3n+Q98NmFa8XB7/9XP2O+3vo+54Di1OB3qxkUGCxNzZPMLc1TUlKMklNMzE0tLIwtzVJNjA0Mk41MTQwNk+ZO+5vSEMjI8O3qfQYGRgYWBgYGFgYQycTAwAAA/z8fGA==';
+      
+      /*
       const response = await fetch('YOUR_TOKEN_SERVER_ENDPOINT', {
         method: 'POST',
         headers: {
@@ -22,6 +25,7 @@ export const useRoom = () => {
       });
       const data = await response.json();
       return data.token;
+      */
     } catch (error) {
       console.error('Error generating token:', error);
       return null;
@@ -30,6 +34,7 @@ export const useRoom = () => {
 
   const createRoom = async (name) => {
     if (!auth.currentUser) return false;
+    if (!name) return false;
     
     const token = await generateToken(name, auth.currentUser.uid);
     if (token) {
@@ -43,6 +48,7 @@ export const useRoom = () => {
 
   const joinRoom = async (name) => {
     if (!auth.currentUser) return false;
+    if (!name) return false;
     
     const token = await generateToken(name, auth.currentUser.uid);
     if (token) {

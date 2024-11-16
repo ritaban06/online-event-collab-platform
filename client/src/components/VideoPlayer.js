@@ -16,9 +16,13 @@ const VideoPlayer = () => {
       alert('Please login first');
       return;
     }
-    const success = await createRoom(inputRoomName);
+    if (!inputRoomName.trim()) {
+      alert('Please enter a room name');
+      return;
+    }
+    const success = await createRoom(inputRoomName.trim());
     if (!success) {
-      alert('Failed to create room');
+      alert('Failed to create room. Please try again.');
     }
   };
 
@@ -27,9 +31,13 @@ const VideoPlayer = () => {
       alert('Please login first');
       return;
     }
-    const success = await joinRoom(inputRoomName);
+    if (!inputRoomName.trim()) {
+      alert('Please enter a room name');
+      return;
+    }
+    const success = await joinRoom(inputRoomName.trim());
     if (!success) {
-      alert('Failed to join room');
+      alert('Failed to join room. Please check the room name and try again.');
     }
   };
 
