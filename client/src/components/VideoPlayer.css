@@ -11,9 +11,12 @@
 
 .video-view {
   position: relative;
-  width: 650px;
-  height: 350px;
+  width: 100%;
+  height: calc(100vh - 100px);
   margin: auto;
+  background-color: #1C1C1C;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 .video-view .video {
@@ -95,14 +98,15 @@
 
 .control-bar {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: rgba(0, 0, 0, 0.7);
-  padding: 15px;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
   display: flex;
-  justify-content: center;
   gap: 15px;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 10px 20px;
+  border-radius: 30px;
 }
 
 .control-button {
@@ -130,7 +134,7 @@
 .video-wrapper {
   position: relative;
   width: 100%;
-  height: calc(100vh - 64px);
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
