@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import VideoCall from './VideoCall';
 import { useRoom } from '../hooks/useRoom';
 import { auth } from '../firebaseConfig';
-import { BsChatLeft, BsPeople, BsTelephoneX } from 'react-icons/bs';
+import { BsChatLeft, BsPeople, BsTelephoneX, BsCameraVideo, BsMic } from 'react-icons/bs';
 import './VideoPlayer.css';
 
 const VideoPlayer = () => {
@@ -10,6 +10,8 @@ const VideoPlayer = () => {
   const [showParticipants, setShowParticipants] = useState(false);
   const [inputRoomName, setInputRoomName] = useState('');
   const { roomName, isHost, token, createRoom, joinRoom } = useRoom();
+  const [isCameraOn, setIsCameraOn] = useState(true);
+  const [isMicOn, setIsMicOn] = useState(true);
 
   const handleCreateRoom = async () => {
     if (!auth.currentUser) {
@@ -53,39 +55,62 @@ const VideoPlayer = () => {
             className="room-input"
           />
           <div className="button-group">
-            <button 
-              onClick={handleCreateRoom}
-              className="create-button"
-            >
+            <button onClick={handleCreateRoom} className="create-button">
               Create Room
             </button>
-            <button 
-              onClick={handleJoinRoom}
-              className="join-button"
-            >
+            <button onClick={handleJoinRoom} className="join-button">
               Join Room
             </button>
           </div>
         </div>
       ) : (
-        <VideoCall 
-          channelName={roomName}
-          token={token}
-          isHost={isHost}
-        />
+        <>
+          <VideoCall 
+            channelName={roomName}
+            token={token}
+            isHost={isHost}
+            isCameraOn={isCameraOn}
+            isMicOn={isMicOn}
+          />
+          
+          <div className="controls-container">
+            <button 
+              onClick={() => setIsCameraOn(!isCameraOn)}
+              className={`control-button ${!isCameraOn ? 'off' : ''}`}
+            >
+              <BsCameraVideo />
+            </button>
+            
+            <button 
+              onClick={() => setIsMicOn(!isMicOn)}
+              className={`control-button ${!isMicOn ? 'off' : ''}`}
+            >
+              <BsMic />
+            </button>
+
+            <button 
+              onClick={() => setShowParticipants(!showParticipants)}
+              className="control-button"
+            >
+              <BsPeople />
+            </button>
+
+            <button 
+              onClick={() => setShowChat(!showChat)}
+              className="control-button"
+            >
+              <BsChatLeft />
+            </button>
+
+            <button 
+              onClick={() => window.location.reload()}
+              className="control-button end-call"
+            >
+              <BsTelephoneX />
+            </button>
+          </div>
+        </>
       )}
-      
-      <div className="control-bar">
-        <button onClick={() => setShowParticipants(!showParticipants)}>
-          <BsPeople />
-        </button>
-        <button onClick={() => setShowChat(!showChat)}>
-          <BsChatLeft />
-        </button>
-        <button onClick={() => window.location.reload()}>
-          <BsTelephoneX />
-        </button>
-      </div>
     </div>
   );
 };

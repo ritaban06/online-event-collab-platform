@@ -3,8 +3,9 @@ import AgoraRTC from 'agora-rtc-sdk-ng';
 import { config } from '../config/agoraConfig';
 import { auth } from '../firebaseConfig';
 
-const VideoCall = ({ channelName, token, isHost }) => {
+const VideoCall = ({ channelName, token, isHost, isCameraOn, isMicOn }) => {
   const [localVideoTrack, setLocalVideoTrack] = useState(null);
+  const [localAudioTrack, setLocalAudioTrack] = useState(null);
   const [remoteUsers, setRemoteUsers] = useState([]);
   const [client, setClient] = useState(null);
 
@@ -16,9 +17,10 @@ const VideoCall = ({ channelName, token, isHost }) => {
         await agoraClient.join(config.appId, channelName, token, auth.currentUser.uid);
         
         if (isHost) {
-          const tracks = await AgoraRTC.createMicrophoneAndCameraTracks();
-          await agoraClient.publish(tracks);
-          setLocalVideoTrack(tracks[1]);
+          const [audioTrack, videoTrack] = await AgoraRTC.createMicrophoneAndCameraTracks();
+          await agoraClient.publish([audioTrack, videoTrack]);
+          setLocalAudioTrack(audioTrack);
+          setLocalVideoTrack(videoTrack);
         }
         
         setClient(agoraClient);
@@ -45,8 +47,21 @@ const VideoCall = ({ channelName, token, isHost }) => {
     return () => {
       client?.leave();
       localVideoTrack?.close();
+      localAudioTrack?.close();
     };
   }, [channelName, token, isHost]);
+
+  useEffect(() => {
+    if (localVideoTrack) {
+      localVideoTrack.setEnabled(isCameraOn);
+    }
+  }, [isCameraOn]);
+
+  useEffect(() => {
+    if (localAudioTrack) {
+      localAudioTrack.setEnabled(isMicOn);
+    }
+  }, [isMicOn]);
 
   return (
     <div className="video-grid">

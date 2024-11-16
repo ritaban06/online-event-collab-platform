@@ -223,4 +223,47 @@
 
 .create-button:hover {
   background: #4338ca;
+}
+
+.controls-container {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 50px;
+  z-index: 10;
+}
+
+.control-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: #4f46e5;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.control-button:hover {
+  background: #4338ca;
+}
+
+.control-button.off {
+  background: #dc2626;
+}
+
+.control-button.end-call {
+  background: #dc2626;
+}
+
+.control-button.end-call:hover {
+  background: #b91c1c;
 } 
