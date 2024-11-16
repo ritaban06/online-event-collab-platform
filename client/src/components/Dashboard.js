@@ -33,7 +33,7 @@ const Dashboard = () => {
       Next: Show Online Coding
     </button> */}
   </div>
-</section>,
+</section>;
       case 'coding':
         return (
           <section>
