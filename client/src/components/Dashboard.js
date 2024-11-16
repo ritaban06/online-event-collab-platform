@@ -72,9 +72,9 @@ const Dashboard = () => {
         )}
         
         {showVideoPlayer && (
-          <section>
-            <h2 className="section-title">Live Video Session</h2>
-            <VideoPlayer />
+          <section className="video-section">
+            <h2 className="section-title mb-4">Live Video Session</h2>
+            <VideoPlayer onClose={() => setShowVideoPlayer(false)} />
           </section>
         )}
       </div>

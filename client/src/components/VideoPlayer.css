@@ -1,156 +1,123 @@
-.video-frame {
-  width: 300px;
-  height: 300px;
-  border-radius: 10px;
-  object-fit: cover;
-  margin: 10px;
-  background: #000;
-  border: 1px solid lightslategrey;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
-}
-
-.video-view {
+.video-player-container {
   position: relative;
   width: 100%;
-  height: calc(100vh - 100px);
-  margin: auto;
-  background-color: #1C1C1C;
-  border-radius: 10px;
+  height: 80vh;
+  background-color: #1a1a1a;
+  border-radius: 0.5rem;
   overflow: hidden;
+  margin-top: 20px;
 }
 
-.video-view .video {
-  position: absolute;
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+  padding: 1rem;
+  height: calc(100% - 80px);
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  background-color: #1C1C1C;
-  border-radius: 10px;
-}
-
-.video-view .video-content {
-  position: absolute;
-  object-fit: cover;
-  margin-top: 280px;
-  margin-left: 280px;
-  color: aliceblue;
-}
-
-.btn-content {
-  height: 53px;
-  margin-top: -20px;
-  width: 50px;
-  background-color: #e0e0e0;
-  padding: 15px;
-  border-radius: 25px;
-  margin-left: 30px;
-}
-
-.mute-btn-content {
-  height: 50px;
-  margin-top: -20px;
-  width: 50px;
-  background-color: #d3382d;
-  padding: 15px;
-  border-radius: 25px;
-  margin-left: 30px;
-}
-
-.bi {
-  font-size: 19px;
-}
-
-.chat-wrapper,
-.participant-wrapper {
-  height: 100%;
-  width: 0;
-  position: fixed;
-  z-index: 50;
-  top: 0;
-  right: 0;
-  background-color: #212032;
-  overflow-x: hidden;
-  transition: 0.7s;
-  padding-top: 60px;
-  border: 1px solid lightslategrey;
-  border-radius: 15px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
-}
-
-#videoContainer {
-  height: 100vh;
-  width: 100vw;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  padding: 10px;
-  box-sizing: border-box;
-}
-
-#videoContainer > div {
-  border: 1px solid red;
-  flex: 1 1 48%;
-  min-width: 250px;
-  max-width: 100%;
-  aspect-ratio: 16 / 9;
-  height: auto;
-}
-
-.control-bar {
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1000;
-  display: flex;
-  gap: 15px;
-  background: rgba(0, 0, 0, 0.5);
-  padding: 10px 20px;
-  border-radius: 30px;
-}
-
-.control-button {
-  background: #e0e0e0;
-  border: none;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.control-button:hover {
-  background: #d0d0d0;
-}
-
-.control-button.muted {
-  background: #d3382d;
-  color: white;
 }
 
 .video-wrapper {
   position: relative;
   width: 100%;
   height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  min-height: 400px;
+  background-color: #2a2a2a;
+  border-radius: 0.5rem;
+  overflow: hidden;
 }
 
 .video-element {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  background-color: #000;
 }
 
-.camera-off-message {
+.screen-share .video-element {
+  object-fit: contain;
+  background-color: #000;
+}
+
+.controls-container {
   position: absolute;
-  top: 50%;
+  bottom: 20px;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 50px;
+  z-index: 10;
+}
+
+.control-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: #3a3a3a;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.control-button:hover {
+  background-color: #4a4a4a;
+}
+
+.control-button.active {
+  background-color: #4f46e5;
+}
+
+.control-button.active:hover {
+  background-color: #4338ca;
+}
+
+.control-button.close {
+  background-color: #dc2626;
+}
+
+.control-button.close:hover {
+  background-color: #b91c1c;
+}
+
+.control-icon {
+  width: 24px;
+  height: 24px;
   color: white;
-  font-size: 1.2em;
-} 
+}
+
+.error-toast {
+  position: absolute;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #dc2626;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .video-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .control-button {
+    width: 40px;
+    height: 40px;
+  }
+
+  .control-icon {
+    width: 20px;
+    height: 20px;
+  }
+}

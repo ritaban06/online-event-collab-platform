@@ -1,113 +1,182 @@
-import React, { useState } from 'react';
-import { JitsiMeeting } from '@jitsi/react-sdk';
-import { BsChatLeft, BsPeople } from 'react-icons/bs';
+import React, { useEffect, useRef, useState } from 'react';
+import { Mic, MicOff, Video, VideoOff, Monitor, X } from 'lucide-react';
 import './VideoPlayer.css';
 
-const VideoPlayer = () => {
-  const [showChat, setShowChat] = useState(false);
-  const [showParticipants, setShowParticipants] = useState(false);
-  const [api, setApi] = useState(null);
+function VideoPlayer({ onClose }) {
+  const [isVideoOn, setIsVideoOn] = useState(false);
+  const [isAudioOn, setIsAudioOn] = useState(false);
+  const [isScreenSharing, setIsScreenSharing] = useState(false);
+  const [error, setError] = useState(null);
+  
+  const videoRef = useRef(null);
+  const screenRef = useRef(null);
+  const streamRef = useRef(null);
+  const screenStreamRef = useRef(null);
 
-  const handleJitsiIFrameRef = (iframeRef) => {
-    iframeRef.style.height = '100%';
-    iframeRef.style.width = '100%';
-  };
+  const clearError = () => setError(null);
 
-  const handleApiReady = (apiObj) => {
-    setApi(apiObj);
-  };
-
-  const toggleChat = () => {
-    if (api) {
-      if (!showChat) {
-        api.executeCommand('toggleChat');
-      } else {
-        api.executeCommand('toggleChat');
-      }
-      setShowChat(!showChat);
+  const stopMediaTracks = () => {
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach(track => track.stop());
+    }
+    if (screenStreamRef.current) {
+      screenStreamRef.current.getTracks().forEach(track => track.stop());
     }
   };
 
-  const toggleParticipants = () => {
-    if (api) {
-      if (!showParticipants) {
-        api.executeCommand('toggleParticipants');
-      } else {
-        api.executeCommand('toggleParticipants');
+  const toggleVideo = async () => {
+    try {
+      if (isVideoOn) {
+        stopMediaTracks();
+        setIsVideoOn(false);
+        return;
       }
-      setShowParticipants(!showParticipants);
+
+      const stream = await navigator.mediaDevices.getUserMedia({ 
+        video: true,
+        audio: isAudioOn 
+      });
+      
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+        streamRef.current = stream;
+        setIsVideoOn(true);
+      }
+    } catch (err) {
+      setError('Failed to access camera');
+      console.error('Error accessing camera:', err);
     }
   };
+
+  const toggleAudio = async () => {
+    try {
+      if (isAudioOn) {
+        if (streamRef.current) {
+          streamRef.current.getAudioTracks().forEach(track => track.stop());
+        }
+        setIsAudioOn(false);
+        return;
+      }
+
+      const audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      if (streamRef.current) {
+        const videoTrack = streamRef.current.getVideoTracks()[0];
+        if (videoTrack) {
+          streamRef.current.addTrack(audioStream.getAudioTracks()[0]);
+        } else {
+          streamRef.current = audioStream;
+        }
+      } else {
+        streamRef.current = audioStream;
+      }
+      setIsAudioOn(true);
+    } catch (err) {
+      setError('Failed to access microphone');
+      console.error('Error accessing microphone:', err);
+    }
+  };
+
+  const toggleScreenShare = async () => {
+    try {
+      if (isScreenSharing) {
+        if (screenStreamRef.current) {
+          screenStreamRef.current.getTracks().forEach(track => track.stop());
+        }
+        setIsScreenSharing(false);
+        return;
+      }
+
+      const stream = await navigator.mediaDevices.getDisplayMedia({ video: true });
+      if (screenRef.current) {
+        screenRef.current.srcObject = stream;
+        screenStreamRef.current = stream;
+        setIsScreenSharing(true);
+
+        // Handle when user stops sharing via browser controls
+        stream.getVideoTracks()[0].onended = () => {
+          setIsScreenSharing(false);
+        };
+      }
+    } catch (err) {
+      setError('Failed to share screen');
+      console.error('Error sharing screen:', err);
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      stopMediaTracks();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (error) {
+      const timeout = setTimeout(clearError, 3000);
+      return () => clearTimeout(timeout);
+    }
+  }, [error]);
 
   return (
-    <div className="container mx-auto px-4 py-6 h-full">
-      <div className="video-wrapper">
-        <div className="video-view">
-          <JitsiMeeting
-            domain="meet.jit.si"
-            roomName="your-event-room-name"
-            configOverwrite={{
-              startWithAudioMuted: true,
-              startWithVideoMuted: false,
-              toolbarButtons: [
-                'microphone',
-                'camera',
-                'closedcaptions',
-                'desktop',
-                'fullscreen',
-                'fodeviceselection',
-                'hangup',
-                'profile',
-                'recording',
-                'livestreaming',
-                'etherpad',
-                'settings',
-                'raisehand',
-                'videoquality',
-                'filmstrip',
-                'feedback',
-                'stats',
-                'shortcuts',
-                'tileview',
-                'select-background',
-                'download',
-                'help',
-                'mute-everyone',
-                'security'
-              ],
-            }}
-            interfaceConfigOverwrite={{
-              TOOLBAR_BUTTONS: [],
-              SHOW_JITSI_WATERMARK: false,
-              SHOW_WATERMARK_FOR_GUESTS: false,
-              SHOW_BRAND_WATERMARK: false,
-            }}
-            userInfo={{
-              displayName: 'Your Name'
-            }}
-            onApiReady={handleApiReady}
-            getIFrameRef={handleJitsiIFrameRef}
-          />
-
-          <div className="control-bar">
-            <button 
-              onClick={toggleParticipants}
-              className="p-3 rounded-full bg-gray-600 hover:bg-opacity-80 transition-colors"
-            >
-              <BsPeople className="text-white text-xl" />
-            </button>
-
-            <button 
-              onClick={toggleChat}
-              className="p-3 rounded-full bg-gray-600 hover:bg-opacity-80 transition-colors"
-            >
-              <BsChatLeft className="text-white text-xl" />
-            </button>
+    <div className="video-player-container">
+      <div className="video-grid">
+        {isVideoOn && (
+          <div className="video-wrapper">
+            <video
+              ref={videoRef}
+              autoPlay
+              playsInline
+              muted={!isAudioOn}
+              className="video-element"
+            />
           </div>
-        </div>
+        )}
+        
+        {isScreenSharing && (
+          <div className="video-wrapper screen-share">
+            <video
+              ref={screenRef}
+              autoPlay
+              playsInline
+              className="video-element"
+            />
+          </div>
+        )}
       </div>
+
+      <div className="controls-container">
+        <button
+          onClick={toggleAudio}
+          className={`control-button ${isAudioOn ? 'active' : ''}`}
+        >
+          {isAudioOn ? <Mic className="control-icon" /> : <MicOff className="control-icon" />}
+        </button>
+
+        <button
+          onClick={toggleVideo}
+          className={`control-button ${isVideoOn ? 'active' : ''}`}
+        >
+          {isVideoOn ? <Video className="control-icon" /> : <VideoOff className="control-icon" />}
+        </button>
+
+        <button
+          onClick={toggleScreenShare}
+          className={`control-button ${isScreenSharing ? 'active' : ''}`}
+        >
+          <Monitor className="control-icon" />
+        </button>
+
+        <button onClick={onClose} className="control-button close">
+          <X className="control-icon" />
+        </button>
+      </div>
+
+      {error && (
+        <div className="error-toast animate-slide-up">
+          {error}
+        </div>
+      )}
     </div>
   );
-};
+}
 
 export default VideoPlayer;
