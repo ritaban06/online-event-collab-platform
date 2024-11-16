@@ -64,6 +64,7 @@ const Dashboard = () => {
             <button 
               onClick={handleShowVideo}
               className="animated-button"
+              style={{ marginTop: '40px' }}
             >
               Next: Show Live Video Session
             </button>
