@@ -46,12 +46,12 @@ const Dashboard = () => {
   <h2 className="section-title">Create Your Event</h2>
   <EventForm />
   <div style={{ marginTop: '20px' }}>
-    <button 
+    {/* <button 
       onClick={handleShowCoding}
       className="animated-button"
     >
       Next: Show Online Coding
-    </button>
+    </button> */}
   </div>
 </section>
 
