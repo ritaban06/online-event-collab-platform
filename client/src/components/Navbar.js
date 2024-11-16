@@ -1,4 +1,3 @@
-// Navbar.js
 import React, { useState } from "react";
 import Logout from "./Logout"; // Import the Logout component
 

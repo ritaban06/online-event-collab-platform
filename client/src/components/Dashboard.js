@@ -3,7 +3,7 @@ import EventForm from "./EventForm";
 import VideoPlayer from "./VideoPlayer";
 import CodingEditor from "./CodingEditor";
 import Navbar from "./Navbar";
-import "./Dashboard.css"; // Import the new CSS file for styling
+import "./Dashboard.css";
 
 const Dashboard = () => {
   const [showEventForm, setShowEventForm] = useState(true);
