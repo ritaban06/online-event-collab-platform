@@ -1,11 +1,8 @@
 import React, { useState } from "react";
-import io from "socket.io-client";
 import InputField from "./InputField";
 import DatePicker from "./DatePicker";
 import SessionList from "./SessionList";
 import { auth } from '../firebaseConfig';
-
-const socket = io("http://localhost:9000"); // Ensure this matches your server URL
 
 const EventForm = () => {
   const [eventDetails, setEventDetails] = useState({
@@ -27,7 +24,6 @@ const EventForm = () => {
       return;
     }
     const roomName = eventDetails.title.trim().replace(/\s+/g, "-").toLowerCase();
-    socket.emit("createRoom", roomName);
     setRoom(roomName);
     
     // Store room info in your backend/database
@@ -48,11 +44,6 @@ const EventForm = () => {
       console.error('Failed to store room info:', error);
     }
   };
-
-  // Listen for confirmation that room was created
-  socket.on("roomCreated", (roomName) => {
-    alert(`Room '${roomName}' created successfully! Other users can join.`);
-  });
 
   return (
     <div className="bg-white p-6 rounded shadow-md max-w-md mx-auto">
