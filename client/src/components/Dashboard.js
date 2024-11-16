@@ -23,10 +23,17 @@ const Dashboard = () => {
       case 'event':
         return (
           <section>
-            <h2 className="section-title">Create Your Event</h2>
-            <EventForm onEventCreated={handleEventCreated} />
-          </section>
-        );
+  <h2 className="section-title">Create Your Event</h2>
+  <EventForm />
+  <div style={{ marginTop: '20px' }}>
+    {/* <button 
+      onClick={handleShowCoding}
+      className="animated-button"
+    >
+      Next: Show Online Coding
+    </button> */}
+  </div>
+</section>
 
       case 'coding':
         return (
