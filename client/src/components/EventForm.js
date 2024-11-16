@@ -3,6 +3,7 @@ import io from "socket.io-client";
 import InputField from "./InputField";
 import DatePicker from "./DatePicker";
 import SessionList from "./SessionList";
+import { auth } from '../firebaseConfig';
 
 const socket = io("http://localhost:9000"); // Ensure this matches your server URL
 
@@ -20,10 +21,32 @@ const EventForm = () => {
     setEventDetails((prev) => ({ ...prev, [name]: value }));
   };
 
-  const createRoom = () => {
+  const createRoom = async () => {
+    if (!eventDetails.title) {
+      alert('Please enter an event title');
+      return;
+    }
     const roomName = eventDetails.title.trim().replace(/\s+/g, "-").toLowerCase();
     socket.emit("createRoom", roomName);
     setRoom(roomName);
+    
+    // Store room info in your backend/database
+    try {
+      await fetch('/api/rooms', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${auth.currentUser?.uid}`
+        },
+        body: JSON.stringify({
+          roomName,
+          hostId: auth.currentUser?.uid,
+          eventDetails
+        })
+      });
+    } catch (error) {
+      console.error('Failed to store room info:', error);
+    }
   };
 
   // Listen for confirmation that room was created

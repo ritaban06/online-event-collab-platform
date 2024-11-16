@@ -1,45 +1,72 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import VideoCall from './VideoCall';
+import { useRoom } from '../hooks/useRoom';
+import { auth } from '../firebaseConfig';
 import { BsChatLeft, BsPeople, BsTelephoneX } from 'react-icons/bs';
 import './VideoPlayer.css';
 
 const VideoPlayer = () => {
   const [showChat, setShowChat] = useState(false);
   const [showParticipants, setShowParticipants] = useState(false);
-  const [channelName, setChannelName] = useState('');
-  const [isInCall, setIsInCall] = useState(false);
+  const [inputRoomName, setInputRoomName] = useState('');
+  const { roomName, isHost, token, createRoom, joinRoom } = useRoom();
 
-  const startCall = (roomName) => {
-    setChannelName(roomName);
-    setIsInCall(true);
+  const handleCreateRoom = async () => {
+    if (!auth.currentUser) {
+      alert('Please login first');
+      return;
+    }
+    const success = await createRoom(inputRoomName);
+    if (!success) {
+      alert('Failed to create room');
+    }
+  };
+
+  const handleJoinRoom = async () => {
+    if (!auth.currentUser) {
+      alert('Please login first');
+      return;
+    }
+    const success = await joinRoom(inputRoomName);
+    if (!success) {
+      alert('Failed to join room');
+    }
   };
 
   return (
     <div className="video-container">
-      {!isInCall ? (
+      {!roomName ? (
         <div className="join-call-container">
           <input
             type="text"
-            value={channelName}
-            onChange={(e) => setChannelName(e.target.value)}
+            value={inputRoomName}
+            onChange={(e) => setInputRoomName(e.target.value)}
             placeholder="Enter room name"
             className="room-input"
           />
-          <button 
-            onClick={() => startCall(channelName)}
-            className="join-button"
-          >
-            Join Room
-          </button>
+          <div className="button-group">
+            <button 
+              onClick={handleCreateRoom}
+              className="create-button"
+            >
+              Create Room
+            </button>
+            <button 
+              onClick={handleJoinRoom}
+              className="join-button"
+            >
+              Join Room
+            </button>
+          </div>
         </div>
       ) : (
         <VideoCall 
-          channelName={channelName}
-          isHost={true}
+          channelName={roomName}
+          token={token}
+          isHost={isHost}
         />
       )}
       
-      {/* Your existing control buttons */}
       <div className="control-bar">
         <button onClick={() => setShowParticipants(!showParticipants)}>
           <BsPeople />
@@ -47,7 +74,7 @@ const VideoPlayer = () => {
         <button onClick={() => setShowChat(!showChat)}>
           <BsChatLeft />
         </button>
-        <button onClick={() => setIsInCall(false)}>
+        <button onClick={() => window.location.reload()}>
           <BsTelephoneX />
         </button>
       </div>
