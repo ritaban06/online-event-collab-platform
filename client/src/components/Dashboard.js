@@ -21,19 +21,20 @@ const Dashboard = () => {
   const renderContent = () => {
     switch (currentStep) {
       case 'event':
-        return (
-          <section>
-  <h2 className="section-title">Create Your Event</h2>
-  <EventForm />
-  <div style={{ marginTop: '20px' }}>
-    {/* <button 
-      onClick={handleShowCoding}
-      className="animated-button"
-    >
-      Next: Show Online Coding
-    </button> */}
-  </div>
-</section>;
+  return (
+    <section>
+      <h2 className="section-title">Create Your Event</h2>
+      <EventForm />
+      <div style={{ marginTop: '20px' }}>
+        {/* <button 
+          onClick={handleShowCoding}
+          className="animated-button"
+        >
+          Next: Show Online Coding
+        </button> */}
+      </div>
+    </section>
+  );
       case 'coding':
         return (
           <section>
