@@ -34,7 +34,6 @@ const Dashboard = () => {
     </button> */}
   </div>
 </section>
-
       case 'coding':
         return (
           <section>
