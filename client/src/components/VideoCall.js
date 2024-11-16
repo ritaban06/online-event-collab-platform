@@ -67,15 +67,29 @@ const VideoCall = ({ channelName, token, isHost, isCameraOn, isMicOn }) => {
     <div className="video-grid">
       {localVideoTrack && (
         <div className="video-player">
-          <div ref={el => localVideoTrack.play(el)} className="video-element"></div>
+          <div 
+            className="video-element" 
+            ref={(element) => {
+              if (element) {
+                localVideoTrack.play(element);
+              }
+            }}
+          />
+          {!isCameraOn && (
+            <div className="camera-off-message">Camera is off</div>
+          )}
         </div>
       )}
       {remoteUsers.map(user => (
         <div key={user.uid} className="video-player">
           <div 
-            ref={el => user.videoTrack?.play(el)} 
             className="video-element"
-          ></div>
+            ref={(element) => {
+              if (element && user.videoTrack) {
+                user.videoTrack.play(element);
+              }
+            }}
+          />
         </div>
       ))}
     </div>
