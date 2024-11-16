@@ -126,7 +126,7 @@ const VideoPlayer = () => {
   const toggleParticipants = () => setShowParticipants(!showParticipants);
 
   return (
-    <div className="container mx-auto px-4 py-6">
+    <div className="container mx-auto px-4 py-6 h-full">
       <div className="video-wrapper">
         <div className="video-view">
           <video 
