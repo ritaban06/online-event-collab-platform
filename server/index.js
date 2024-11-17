@@ -4,7 +4,7 @@ const http = require('http').createServer(app);
 const cors = require('cors');
 const io = require('socket.io')(http, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: ["http://localhost:3000", "https://your-ngrok-url.ngrok.io"],
     methods: ["GET", "POST"]
   }
 });

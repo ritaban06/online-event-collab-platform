@@ -4,7 +4,7 @@ import InputField from "./InputField";
 import DatePicker from "./DatePicker";
 import SessionList from "./SessionList";
 
-const socket = io("http://localhost:9000", {
+const socket = io(" https://4d4b-136-232-88-2.ngrok-free.app", {
   reconnectionDelay: 1000,
   reconnection: true,
   reconnectionAttempts: 10,
