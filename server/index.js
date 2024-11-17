@@ -4,9 +4,12 @@ const http = require('http').createServer(app);
 const cors = require('cors');
 const io = require('socket.io')(http, {
   cors: {
-    origin: ["http://localhost:3000", "https://your-ngrok-url.ngrok.io"],
-    methods: ["GET", "POST"]
-  }
+    origin: "*",
+    methods: ["GET", "POST"],
+    allowedHeaders: ["*"],
+    credentials: true
+  },
+  transports: ['websocket', 'polling']
 });
 
 app.use(cors({
@@ -16,7 +19,7 @@ app.use(cors({
     
     const allowedOrigins = [
       'http://localhost:3000',
-      'https://your-ngrok-url.ngrok.io'
+      'https://ba3d-136-232-88-2.ngrok-free.app'
     ];
     
     if (allowedOrigins.indexOf(origin) === -1) {
