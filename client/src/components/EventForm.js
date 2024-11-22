@@ -4,13 +4,11 @@ import InputField from "./InputField";
 import DatePicker from "./DatePicker";
 import SessionList from "./SessionList";
 
-const socket = io("http://localhost:9000", {
-  reconnectionDelay: 1000,
-  reconnection: true,
+const socket = io("https://ba3d-136-232-88-2.ngrok-free.app", {
+  transports: ['websocket', 'polling'],
+  reconnectionDelayMax: 10000,
   reconnectionAttempts: 10,
-  transports: ['websocket'],
-  agent: false,
-  upgrade: false,
+  secure: true,
   rejectUnauthorized: false
 });
 
