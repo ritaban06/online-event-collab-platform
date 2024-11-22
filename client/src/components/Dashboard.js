@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import EventForm from "./EventForm";
 import VideoPlayer from "./VideoPlayer";
-import CodingEditor from "./CodingEditor";
+import CodingEditor from "./CodeRunner";
 import Navbar from "./Navbar";
 import "./Dashboard.css";
 
