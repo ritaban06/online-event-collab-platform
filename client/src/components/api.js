@@ -1,25 +1,38 @@
 import axios from "axios";
 
-// Replace with your actual CodeX API endpoint
-const API_BASE_URL = "https://codex-api.com";
+// Base URL for CodeX API (replace with actual API endpoint)
+const API_BASE_URL = 'https://codex-api.com';
+
+const axiosInstance = axios.create({
+  baseURL: API_BASE_URL,
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+  },
+  timeout: 10 * 1000, // 10 seconds
+  retry: 3,
+  retryDelay: (retryCount) => {
+    return retryCount * 1000;
+  },
+});
 
 export const runCode = async ({ code, language, input }) => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/compile`, {
+    const response = await axiosInstance.post('/compile', {
       code,
       language,
       input,
     }, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
+      validateStatus: (status) => status >= 200 && status < 300,
     });
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      return { error: error.response?.data || "An unexpected error occurred." };
+      const errorMessage = error.response?.data?.error || 'Something went wrong!';
+      const statusCode = error.response?.status;
+      return { error: errorMessage, statusCode };
     } else {
-      return { error: "An unknown error occurred." };
+      return { error: 'An unknown error occurred', statusCode: 500 };
     }
   }
 };
