@@ -30,18 +30,19 @@ const Dashboard = () => {
           </section>
         );
       case 'coding':
-        return (
-          <section>
-            <h2 className="section-title">Online Coding</h2>
-            <CodeRunner roomName={roomName} />
-            <button
-              onClick={handleCodingComplete}
-              className="animated-button mt-4"
-            >
-              Start Video Session
-            </button>
-          </section>
-        );
+      return (
+        <section>
+          <h2 className="section-title">Online Coding</h2>
+          <CodeRunner roomName={roomName} />
+          <button
+            onClick={handleCodingComplete}
+            className="animated-button mt-4"
+            disabled={!roomName}
+          >
+            {roomName ? 'Start Video Session' : 'Waiting for room to be created...'}
+          </button>
+        </section>
+      );  
 
       case 'video':
         return (

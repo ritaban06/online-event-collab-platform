@@ -10,7 +10,6 @@ import {
   Typography,
   Switch,
   FormControlLabel,
-  Autocomplete,
 } from "@mui/material";
 import { v4 as uuidv4 } from "uuid";
 import { io } from "socket.io-client";
@@ -89,7 +88,7 @@ const CodeRunner = () => {
   return (
     <Box sx={{ p: 4, maxWidth: "1200px", margin: "auto" }}>
       <Typography variant="h4" sx={{ mb: 3, textAlign: "center" }}>
-        Online Code Runner
+        Code Runner
       </Typography>
 
       {/* Top Bar: Language Selector, Theme Toggle, and Run Button */}
@@ -166,9 +165,11 @@ const CodeRunner = () => {
             value={error ? `Error: ${error}` : output}
             placeholder="Execution output will appear here"
             variant="outlined"
-            InputProps={{
-              readOnly: true,
-            }}
+          InputProps={{
+            readOnly: true,
+            sx: { backgroundColor: 'transparent' },
+            disableUnderline: true,
+          }}
           />
         </Box>
       </Box>
