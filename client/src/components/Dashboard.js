@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import EventForm from "./EventForm";
 import VideoPlayer from "./VideoPlayer";
-import CodingEditor from "./CodingEditor";
+import CodeRunner from "./CodeRunner";
 import Navbar from "./Navbar";
 import "./Dashboard.css";
 
@@ -33,7 +33,7 @@ const Dashboard = () => {
         return (
           <section>
             <h2 className="section-title">Online Coding</h2>
-            <CodingEditor roomName={roomName} />
+            <CodeRunner roomName={roomName} />
             <button
               onClick={handleCodingComplete}
               className="animated-button mt-4"
