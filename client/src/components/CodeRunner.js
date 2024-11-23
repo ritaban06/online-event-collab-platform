@@ -1,16 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Editor } from "@monaco-editor/react";
-import {
-  Box,
-  Button,
-  Select,
-  MenuItem,
-  CircularProgress,
-  TextField,
-  Typography,
-  Switch,
-  FormControlLabel,
-} from "@mui/material";
+import { Box, Button, Select, MenuItem, CircularProgress, TextField, Typography, Switch, FormControlLabel } from "@mui/material";
 import { v4 as uuidv4 } from "uuid";
 import { io } from "socket.io-client";
 import { runCode } from "./api";
